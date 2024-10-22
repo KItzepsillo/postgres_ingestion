@@ -3,14 +3,28 @@ version: '3.8'
 services:
   postgresdb:
     container_name: postgresdb
+    restart: always
     image: postgres
     ports:
       - "5432:5432"
     environment:
+      # - POSTGRES_USER=root
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=demo
     volumes:
       - postgres_datastore:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.dev
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgresdb
 
 volumes:
   postgres_datastore:
